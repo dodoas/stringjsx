@@ -115,3 +115,9 @@ Put this in your `compilerOptions`:
 ```
 
 Also install [@types/vhtml](https://www.npmjs.com/package/@types/vhtml)
+
+## Development
+
+- Use nodejs 12.
+- `$ npm install`
+- `$ npm test`
