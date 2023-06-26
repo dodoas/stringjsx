@@ -50,8 +50,7 @@ document.body.innerHTML = (
 );
 ```
 
-
-### New: "Sortof" Components!
+### Functional component rendering!
 
 `vhtml` intentionally does not transform JSX to a Virtual DOM, instead serializing it directly to HTML.
 However, it's still possible to make use of basic Pure Functional Components as a sort of "template partial".
@@ -102,3 +101,17 @@ The above outputs the following HTML:
   </ul>
 </div>
 ```
+
+## Config
+
+### Typescript
+
+Put this in your `compilerOptions`:
+
+```json
+  "jsx": "react",
+  "jsxFactory": "h",
+  "jsxFragmentFactory": "h.Fragment",
+```
+
+Also install [@types/vhtml](https://www.npmjs.com/package/@types/vhtml)
