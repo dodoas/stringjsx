@@ -1,10 +1,24 @@
-# vhtml
-
 # This is a fork of [devlopit/vhtml](https://github.com/developit/vhtml)
 
 #### Changes from developit's version:
 
- - none so far
+ - Returns a [wrapped](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_primitives_and_string_objects) instance of a String instead
+ - Stateless ([no sanitize cache](https://github.com/developit/vhtml/issues/34), [no memory leaks](https://github.com/developit/vhtml/issues/20))
+ - Allows you to pass a String (object!) with `_vvhtml_safe = true` to skip sanitization for that child (Thank you to [remziatay](https://github.com/remziatay) for the `new String()` idea!)
+
+The wrapped string is not a breaking change if you assign the return value to something like `.innerHTML` or `.textContent`:
+
+```jsx
+  document.body.innerHTML = <div><p>this works the same!</p></div>
+```
+
+However if you were reliant on typeof or simliar, it might break your code. In
+that case you can add `.toString()` or `.valueOf()` to retrieve the primitive
+string and keep your code working.
+
+---
+
+# vhtml
 
 ### **Render JSX to HTML strings, without VDOM**
 
