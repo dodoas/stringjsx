@@ -57,7 +57,7 @@ describe('vhtml', () => {
     );
   });
 
-  it('should not sanitize the "dangerouslySetInnerHTML" attribute, and directly set its `__html` property as innerHTML', () => {
+  it('injects html from "dangerouslySetInnerHTML.__html" w/o sanitization', () => {
     expect(
       <div dangerouslySetInnerHTML={{ __html: "<span>Injected HTML</span>" }} />.toString()
     ).to.equal(
@@ -78,11 +78,12 @@ describe('vhtml', () => {
         </ul>
       </div>.toString()
     ).to.equal(
-      `<div class="foo"><h1>Hi!</h1><p>Here is a list of 3 items:</p><ul><li>one</li><li>two</li><li>three</li></ul></div>`,
+      `<div class="foo"><h1>Hi!</h1><p>Here is a list of 3 items:</p>` +
+      `<ul><li>one</li><li>two</li><li>three</li></ul></div>`,
     );
   });
 
-  it('should flatten children', () => {
+  it('flattens children', () => {
     expect(
       <div>
         {[['a','b']]}
@@ -94,13 +95,12 @@ describe('vhtml', () => {
     );
   });
 
-  it('should support sortof components', () => {
+  it('supports pseudo-components', () => {
     let items = ['one', 'two'];
 
     const Item = ({ item, index, children }) => (
       <li id={index}>
         <h4>{item}</h4>
-        {children}
       </li>
     );
 
@@ -109,18 +109,17 @@ describe('vhtml', () => {
         <h1>Hi!</h1>
         <ul>
           { items.map( (item, index) => (
-            <Item {...{ item, index }}>
-              This is item {item}!
-            </Item>
+            <Item {...{ item, index }}></Item>
           )) }
         </ul>
       </div>.toString()
     ).to.equal(
-      `<div class="foo"><h1>Hi!</h1><ul><li id="0"><h4>one</h4>This is item one!</li><li id="1"><h4>two</h4>This is item two!</li></ul></div>`
+      `<div class="foo"><h1>Hi!</h1><ul><li id="0"><h4>one</h4></li>` +
+      `<li id="1"><h4>two</h4></li></ul></div>`
     );
   });
 
-  it('should support sortof components without args', () => {
+  it('supports pseudo-components with no parameters', () => {
     let items = ['one', 'two'];
 
     const Item = () => (
@@ -145,15 +144,15 @@ describe('vhtml', () => {
     );
   });
 
-  it('should support sortof components without args but with children', () => {
+  it('supports interacting with the children of pseudo-components', () => {
     let items = ['one', 'two'];
 
     const Item = ({ children }) => (
       <li>
         <h4></h4>
-        {children}
+        {children.reverse()}
       </li>
-    );
+    )
 
     expect(
       <div class="foo">
@@ -161,14 +160,16 @@ describe('vhtml', () => {
         <ul>
           { items.map( (item, index) => (
             <Item>
-              This is item {item}!
+              <div />
+              <span>{item}!</span>
+              <p />
             </Item>
           )) }
         </ul>
       </div>.toString()
     ).to.equal(
-      `<div class="foo"><h1>Hi!</h1><ul><li><h4></h4>This is item one!</li>` +
-      `<li><h4></h4>This is item two!</li></ul></div>`
+      `<div class="foo"><h1>Hi!</h1><ul><li><h4></h4><p></p><span>one!</span><div></div></li>` +
+      `<li><h4></h4><p></p><span>two!</span><div></div></li></ul></div>`
     );
   });
 
@@ -210,7 +211,7 @@ describe('vhtml', () => {
     )
   });
 
-  it('should handle special prop names', () => {
+  it('handles special prop names', () => {
     expect(
       <div className="my-class" htmlFor="id" />.toString()
     ).to.equal(
@@ -218,7 +219,7 @@ describe('vhtml', () => {
     );
   });
 
-  it('should support string fragments', () => {
+  it('supports string fragments', () => {
     expect(
       h(null, null, "foo", "bar", "baz").toString()
     ).to.equal(
@@ -226,7 +227,7 @@ describe('vhtml', () => {
     );
   });
 
-  it('should support element fragments', () => {
+  it('supports element fragments', () => {
     expect(
       h(null, null, <p>foo</p>, <em>bar</em>, <div class="qqqqqq">baz</div>).toString()
     ).to.equal(
