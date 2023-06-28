@@ -18,7 +18,7 @@ string and keep your code working.
 
 ---
 
-# vhtml
+# lhtml
 
 ### **Render JSX to HTML strings, without VDOM**
 

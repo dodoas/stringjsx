@@ -1,4 +1,4 @@
-import h from '../src/vhtml';
+import h from '../src/lhtml.js';
 import { expect } from 'chai';
 /** @jsx h */
 /*global describe,it*/

@@ -1,11 +1,11 @@
 {
-  "name": "vhtml",
-  "amdName": "vhtml",
+  "name": "lhtml",
+  "amdName": "lhtml",
   "version": "2.2.0",
   "description": "Hyperscript reviver that constructs a sanitized HTML string.",
-  "main": "dist/vhtml.js",
-  "minified:main": "dist/vhtml.min.js",
-  "jsnext:main": "src/vhtml.js",
+  "main": "dist/lhtml.js",
+  "minified:main": "dist/lhtml.min.js",
+  "jsnext:main": "src/lhtml.js",
   "scripts": {
     "build": "npm-run-all transpile minify size",
     "transpile": "rollup -c rollup.config.js",
@@ -42,14 +42,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/developit/vhtml.git"
+    "url": "git+https://github.com/odinhb/lhtml.git"
   },
   "author": "Jason Miller <jason@developit.ca>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/developit/vhtml/issues"
+    "url": "https://github.com/odinhb/lhtml/issues"
   },
-  "homepage": "https://github.com/developit/vhtml",
+  "homepage": "https://github.com/odinhb/lhtml",
   "devDependencies": {
     "babel-core": "^6.6.4",
     "babel-eslint": "^7.0.0",
