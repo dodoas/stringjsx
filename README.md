@@ -135,3 +135,7 @@ Also install [@types/vhtml](https://www.npmjs.com/package/@types/vhtml)
 - Use nodejs 12.
 - `$ npm install`
 - `$ npm test`
+
+## Credits
+
+- [Jason Miller](https://github.com/developit) (original creator of [vhtml](https://github.com/developit/vhtml))
