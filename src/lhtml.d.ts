@@ -3,7 +3,7 @@
 // Original definitions by: pastelmind <https://github.com/pastelmind>
 // From: https://github.com/DefinitelyTyped/DefinitelyTyped/blob/98f892cafa74e0217c7d2b5d87c8cc673365a434/types/vhtml/index.d.ts
 
-export = vhtml;
+export = lhtml;
 
 /**
  * Converts Hyperscript/JSX to a plain string.
@@ -11,7 +11,7 @@ export = vhtml;
  * @param attrs Attributes
  * @param children Child elements
  */
-declare function vhtml<T extends string>(name: T, attrs?: HtmlElementAttr<T> | null, ...children: any[]): string;
+declare function lhtml<T extends string>(name: T, attrs?: HtmlElementAttr<T> | null, ...children: any[]): string;
 
 /**
  * Converts Hyperscript/JSX to a plain string.
@@ -19,7 +19,7 @@ declare function vhtml<T extends string>(name: T, attrs?: HtmlElementAttr<T> | n
  * @param attrs Attributes
  * @param children Child elements
  */
-declare function vhtml<Props, Children extends any[]>(
+declare function lhtml<Props, Children extends any[]>(
     component: (props: Props & { children: Children }) => string,
     attrs?: Props | null,
     ...children: Children
@@ -38,8 +38,8 @@ declare function vhtml<Props, Children extends any[]>(
  *    since TypeScript already supports arbitrary `data-*` attributes in JSX
  *    (see "Note" in https://www.typescriptlang.org/docs/handbook/jsx.html#attribute-type-checking)
  */
-type HtmlElementAttr<Tag extends string> = (Tag extends keyof vhtml.JSX.IntrinsicElements
-    ? vhtml.JSX.IntrinsicElements[Tag]
+type HtmlElementAttr<Tag extends string> = (Tag extends keyof lhtml.JSX.IntrinsicElements
+    ? lhtml.JSX.IntrinsicElements[Tag]
     : {}) & {
     dangerouslySetInnerHTML?: { __html: string } | undefined;
     [attr: string]: any;
@@ -65,7 +65,7 @@ type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
 
 /**
  * @internal
- * Type alias that transforms the type of `props.children` of a vhtml component
+ * Type alias that transforms the type of `props.children` of a lhtml component
  * to a type that TypeScript expects.
  *
  * Currently, this supports:
@@ -89,7 +89,7 @@ type ComponentPropTransform<TComp, TProps> = SafeEmptyType<Omit<TProps, "childre
         ? never
         : {});
 
-declare namespace vhtml {
+declare namespace lhtml {
     namespace JSX {
         type Element = string;
 
@@ -101,7 +101,7 @@ declare namespace vhtml {
         type LibraryManagedAttributes<TComp, TProps> = ComponentPropTransform<TComp, TProps>;
 
         interface IntrinsicAttributes {
-            // This property is not used by vhtml, but is required to enforce
+            // This property is not used by lhtml, but is required to enforce
             // type checking of function components that accept no children.
             //
             // To explain: TypeScript checks JSX attributes (and children,
