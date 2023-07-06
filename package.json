@@ -4,6 +4,7 @@
   "version": "3.0.0",
   "description": "Hyperscript reviver that constructs a sanitized HTML string.",
   "main": "dist/lhtml.js",
+  "types": "src/lhtml.d.ts",
   "minified:main": "dist/lhtml.min.js",
   "jsnext:main": "src/lhtml.js",
   "scripts": {
@@ -31,7 +32,7 @@
     ]
   },
   "files": [
-    "src",
+    "src/**/*",
     "dist"
   ],
   "keywords": [

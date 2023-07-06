@@ -5,6 +5,7 @@
  - Returns a [wrapped](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_primitives_and_string_objects) instance of a String instead
  - Stateless ([no sanitize cache](https://github.com/developit/vhtml/issues/34), [no memory leaks](https://github.com/developit/vhtml/issues/20))
  - Allows you to pass a String (object!) with `_vvhtml_safe = true` to skip sanitization for that child (Thank you to [remziatay](https://github.com/remziatay) for the `new String()` idea!)
+ - Types are shipped with the package (no more `@types/vhtml`)
 
 The wrapped string is not a breaking change if you assign the return value to something like `.innerHTML` or `.textContent`:
 
@@ -127,8 +128,6 @@ Put this in your `compilerOptions`:
   "jsxFactory": "h",
   "jsxFragmentFactory": "h.Fragment",
 ```
-
-Also install [@types/vhtml](https://www.npmjs.com/package/@types/vhtml)
 
 ## Development
 

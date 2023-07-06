@@ -6,24 +6,28 @@
 export = lhtml;
 
 /**
- * Converts Hyperscript/JSX to a plain string.
+ * Converts Hyperscript/JSX to a String.
  * @param name Element name
  * @param attrs Attributes
  * @param children Child elements
  */
-declare function lhtml<T extends string>(name: T, attrs?: HtmlElementAttr<T> | null, ...children: any[]): string;
+export function lhtml<T extends string>(name: T, attrs?: HtmlElementAttr<T> | null, ...children: any[]): LHTMLString;
 
 /**
- * Converts Hyperscript/JSX to a plain string.
+ * Converts Hyperscript/JSX to a String.
  * @param component Functional pseudo-component
  * @param attrs Attributes
  * @param children Child elements
  */
-declare function lhtml<Props, Children extends any[]>(
-    component: (props: Props & { children: Children }) => string,
+export function lhtml<Props, Children extends any[]>(
+    component: (props: Props & { children: Children }) => LHTMLString,
     attrs?: Props | null,
     ...children: Children
-): string;
+): LHTMLString;
+
+export interface LHTMLString extends String {
+  _vvhtml_safe: boolean;
+}
 
 /**
  * @internal
@@ -91,6 +95,15 @@ type ComponentPropTransform<TComp, TProps> = SafeEmptyType<Omit<TProps, "childre
 
 declare namespace lhtml {
     namespace JSX {
+        // This is a lie, but Typescript doesn't support ergonomic handling of
+        // the String type. If this type is changed to String or LHTMLString,
+        // Typescript will complain about you assigning it to .textContent or
+        // .innerHTML attributes, even though it works fine in the browser.
+        // .innerHTML is defined as a property with the type string, but in
+        // reality it is implemented using setters and getters, for which
+        // Typescript forbids having different type signatures. (e.g. getter
+        // returns string, while setter accepts (any extends string) or some
+        // such)
         type Element = string;
 
         // Enable component children type checks
