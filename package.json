@@ -1,12 +1,12 @@
 {
-  "name": "lhtml",
-  "amdName": "lhtml",
+  "name": "stringjsx",
+  "amdName": "stringjsx",
   "version": "3.0.0",
   "description": "Hyperscript reviver that constructs a sanitized HTML string.",
-  "main": "dist/lhtml.js",
-  "types": "src/lhtml.d.ts",
-  "minified:main": "dist/lhtml.min.js",
-  "jsnext:main": "src/lhtml.js",
+  "main": "dist/stringjsx.js",
+  "types": "src/stringjsx.d.ts",
+  "minified:main": "dist/stringjsx.min.js",
+  "jsnext:main": "src/stringjsx.js",
   "scripts": {
     "build": "npm-run-all transpile minify size",
     "transpile": "rollup -c rollup.config.js",
@@ -44,18 +44,20 @@
     "hyperscript",
     "html",
     "renderer",
+    "jsx",
+    "tsx",
     "strings"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/odinhb/lhtml.git"
+    "url": "git+https://github.com/odinhb/stringjsx.git"
   },
   "author": "Jason Miller <jason@developit.ca>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/odinhb/lhtml/issues"
+    "url": "https://github.com/odinhb/stringjsx/issues"
   },
-  "homepage": "https://github.com/odinhb/lhtml",
+  "homepage": "https://github.com/odinhb/stringjsx",
   "devDependencies": {
     "babel-core": "^6.6.4",
     "babel-eslint": "^7.0.0",

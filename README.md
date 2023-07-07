@@ -1,8 +1,8 @@
-# lhtml
+# stringjsx
 
 ### **Render JSX to HTML strings, without VDOM**
 
-> Need to use HTML strings (angular?) but want to use JSX? lhtml's got your back.
+> Need to use HTML strings (angular?) but want to use JSX? stringjsx's got your back.
 >
 > Building components? do yourself a favor and use a component framework
 
@@ -14,7 +14,7 @@
 
  - Returns a [wrapped](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_primitives_and_string_objects) instance of a String instead
  - Stateless ([no sanitize cache](https://github.com/developit/vhtml/issues/34), [no memory leaks](https://github.com/developit/vhtml/issues/20))
- - Allows you to pass a String (object!) with `_lhtml_sanitized = true` to skip sanitization for that child (Thank you to [remziatay](https://github.com/remziatay) for the `new String()` idea!)
+ - Allows you to pass a String (object!) with `_stringjsx_sanitized = true` to skip sanitization for that child (Thank you to [remziatay](https://github.com/remziatay) for the `new String()` idea!)
  - Types are shipped with the package (no more `@types/vhtml`)
 
 The wrapped string is not a breaking change if you assign the return value to something like `.innerHTML` or `.textContent`:
@@ -34,7 +34,7 @@ string and keep your code working.
 
 Via npm:
 
-`npm install --save lhtml`
+`npm install --save stringjsx`
 
 
 ---
@@ -44,7 +44,7 @@ Via npm:
 
 ```jsx
 // import the library:
-import h from 'lhtml';
+import h from 'stringjsx';
 
 // tell babel (or whatever compiler) to transpile JSX to h() calls:
 /** @jsx h */
@@ -67,10 +67,10 @@ document.body.innerHTML = (
 
 ### Functional component rendering!
 
-`lhtml` intentionally does not transform JSX to a Virtual DOM, instead serializing it directly to HTML.
+`stringjsx` intentionally does not transform JSX to a Virtual DOM, instead serializing it directly to HTML.
 However, it's still possible to make use of basic Pure Functional Components as a sort of "template partial".
 
-When `lhtml` is given a Function as the JSX tag name, it will invoke that function and pass it `{ children, ...props }`.
+When `stringjsx` is given a Function as the JSX tag name, it will invoke that function and pass it `{ children, ...props }`.
 This is the same signature as a Pure Functional Component in react/preact, except `children` is an Array of already-serialized HTML strings.
 
 This actually means it's possible to build compositional template modifiers with these simple Components, or even higher-order components.

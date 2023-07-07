@@ -1,9 +1,9 @@
-import h from '../src/lhtml.js';
+import h from '../src/stringjsx.js';
 import { expect } from 'chai';
 /** @jsx h */
 /*global describe,it*/
 
-describe('vhtml', () => {
+describe('stringjsx', () => {
   it('produces a string', () => {
     expect(
       <div class="foo"></div>.toString()

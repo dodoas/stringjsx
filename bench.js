@@ -1,5 +1,5 @@
 import microBenchmark from 'micro-benchmark';
-import lhtml from './src/lhtml.js';
+import stringjsx from './src/stringjsx.js';
 import vhtml from './misc/vhtml.js';
 
 const runningInBrowser = !!globalThis.document;
@@ -27,7 +27,7 @@ function variableName(object) {
 }
 
 function doBenchmarking() {
-  const specs = Array([lhtml, 'lhtml'], [vhtml, 'vhtml'])
+  const specs = Array([stringjsx, 'stringjsx'], [vhtml, 'vhtml'])
     .flatMap(([h, rendererName]) => {
       return [
         {
@@ -121,47 +121,3 @@ function doBenchmarking() {
     document.querySelector('#state').textContent = 'ready';
   }
 }
-
-
-// tinybench attempt V
-//
-//
-// import { Bench } from 'tinybench';
-// console.log('boot');
-
-// const b = new Bench({time: 100});
-
-// bench
-//   .add('render a p tag', () => {
-//     h('p', {class: 'text'}, 'lol');
-//   })
-//   .add('render a 1 child structure', () => {
-//     h('div', null,
-//       h('p', {class: 'f-text r-text'}, 'lolem ipsum'),
-//     );
-//   })
-
-// bench.run().then(() => {
-//   console.log('benchmarking finished, results:');
-
-//   console.table(bench.table());
-// });
-
-// V benchmark.js attempt V
-//
-//
-// import Benchmark from 'benchmark';
-// console.log('lhtml benchmark running on', Benchmark.platform.description);
-
-// const suite = new Benchmark.Suite;
-
-// suite.add('render a p tag', function() {
-//   h('p', {class: 'text'}, 'lol');
-// })
-// .on('cycle', event => {
-//   console.log('idk what cycle is but', event)
-// })
-// .on('complete', () => {
-//   console.log('suite complete');
-// })
-// .run({async: false});
