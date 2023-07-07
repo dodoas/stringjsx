@@ -1,15 +1,32 @@
-# vhtml
+# stringjsx
 
-[![NPM](https://img.shields.io/npm/v/vhtml.svg?style=flat)](https://www.npmjs.org/package/vhtml)
-[![travis-ci](https://travis-ci.org/developit/vhtml.svg?branch=master)](https://travis-ci.org/developit/vhtml)
+### **Render JSX to HTML strings, without VDOM**
 
-### **Render JSX/Hyperscript to HTML strings, without VDOM**
-
-> Need to use HTML strings (angular?) but want to use JSX? vhtml's got your back.
+> Need to use HTML strings (angular?) but want to use JSX? stringjsx's got your back.
 >
-> Building components? do yourself a favor and use [<img title="Preact" alt="Preact" src="https://cdn.rawgit.com/developit/b4416d5c92b743dbaec1e68bc4c27cda/raw/8dd78c9d138f13e3fec98cbdd6d1c619cf986ee0/preact-logo-trans.svg" height="24" align="top">](https://github.com/developit/preact)
+> Building components? do yourself a favor and use a component framework
 
-[**JSFiddle Demo**](https://jsfiddle.net/developit/9q0vyskg/)
+---
+
+# This is a fork of [devlopit/vhtml](https://github.com/developit/vhtml)
+
+#### Changes from developit's version:
+
+ - Returns a [wrapped](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_primitives_and_string_objects) instance of a String instead
+ - Stateless ([no sanitize cache](https://github.com/developit/vhtml/issues/34), [no memory leaks](https://github.com/developit/vhtml/issues/20))
+ - Allows you to pass a String (object!) with `_stringjsx_sanitized = true` to skip sanitization for that child (Thank you to [remziatay](https://github.com/remziatay) for the `new String()` idea!)
+ - Types are shipped with the package (no more `@types/vhtml`)
+ - [Typescript will still think the library returns a `string`](./misc/typescript_string.md) for compatibility with previous uses of `.innerHTML =`
+
+The wrapped string is not a breaking change if you assign the return value to something like `.innerHTML` or `.textContent`:
+
+```jsx
+  document.body.innerHTML = <div><p>this works the same!</p></div>
+```
+
+However if you were reliant on typeof or simliar, it might break your code. In
+that case you can add `.toString()` or `.valueOf()` to retrieve the primitive
+string and keep your code working.
 
 ---
 
@@ -18,7 +35,7 @@
 
 Via npm:
 
-`npm install --save vhtml`
+`npm install --save stringjsx`
 
 
 ---
@@ -26,11 +43,11 @@ Via npm:
 
 ## Usage
 
-```js
+```jsx
 // import the library:
-import h from 'vhtml';
+import h from 'stringjsx';
 
-// tell babel to transpile JSX to h() calls:
+// tell babel (or whatever compiler) to transpile JSX to h() calls:
 /** @jsx h */
 
 // now render JSX to an HTML string!
@@ -49,20 +66,19 @@ document.body.innerHTML = (
 );
 ```
 
+### Functional component rendering!
 
-### New: "Sortof" Components!
-
-`vhtml` intentionally does not transform JSX to a Virtual DOM, instead serializing it directly to HTML.
+`stringjsx` intentionally does not transform JSX to a Virtual DOM, instead serializing it directly to HTML.
 However, it's still possible to make use of basic Pure Functional Components as a sort of "template partial".
 
-When `vhtml` is given a Function as the JSX tag name, it will invoke that function and pass it `{ children, ...props }`.
+When `stringjsx` is given a Function as the JSX tag name, it will invoke that function and pass it `{ children, ...props }`.
 This is the same signature as a Pure Functional Component in react/preact, except `children` is an Array of already-serialized HTML strings.
 
 This actually means it's possible to build compositional template modifiers with these simple Components, or even higher-order components.
 
 Here's a more complex version of the previous example that uses a component to encapsulate iteration items:
 
-```js
+```jsx
 let items = ['one', 'two'];
 
 const Item = ({ item, index, children }) => (
@@ -101,3 +117,34 @@ The above outputs the following HTML:
   </ul>
 </div>
 ```
+
+## Config
+
+### Typescript
+
+Put this in your `compilerOptions`:
+
+```json
+  "jsx": "react",
+  "jsxFactory": "h",
+  "jsxFragmentFactory": "h.Fragment",
+```
+
+(This name can be whatever you want, just make sure it is consistent with your
+compiler output or import alias)
+
+## Development
+
+- Use nodejs 12.
+- `$ npm install`
+- `$ npm test`
+
+### Benchmarking
+
+- `$ npm run bench`
+- `$ node tmp/bench.node.js`
+- OR open `bench.html` in browser
+
+## Credits
+
+- [Jason Miller](https://github.com/developit) (original creator of [vhtml](https://github.com/developit/vhtml))
