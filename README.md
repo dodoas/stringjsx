@@ -16,6 +16,7 @@
  - Stateless ([no sanitize cache](https://github.com/developit/vhtml/issues/34), [no memory leaks](https://github.com/developit/vhtml/issues/20))
  - Allows you to pass a String (object!) with `_stringjsx_sanitized = true` to skip sanitization for that child (Thank you to [remziatay](https://github.com/remziatay) for the `new String()` idea!)
  - Types are shipped with the package (no more `@types/vhtml`)
+ - [Typescript will still think the library returns a `string`](./misc/typescript_string.md) for compatibility with previous uses of `.innerHTML =`
 
 The wrapped string is not a breaking change if you assign the return value to something like `.innerHTML` or `.textContent`:
 
