@@ -135,6 +135,12 @@ Put this in your `compilerOptions`:
 - `$ npm install`
 - `$ npm test`
 
+### Benchmarking
+
+- `$ npm run bench`
+- `$ node tmp/bench.node.js`
+- OR open `bench.html` in browser
+
 ## Credits
 
 - [Jason Miller](https://github.com/developit) (original creator of [vhtml](https://github.com/developit/vhtml))
