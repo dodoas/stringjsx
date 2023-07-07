@@ -114,7 +114,7 @@ function render(tagName, attributes) {
             children.push(child[i]);
           }
         } else {
-          if (child._vvhtml_safe) {
+          if (child._lhtml_sanitized) {
             result += child;
           } else {
             result += sanitize(child);
@@ -129,7 +129,7 @@ function render(tagName, attributes) {
   // Read about the fun world of javascript strings
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_primitives_and_string_objects
   const s = new String(result);
-  s._vvhtml_safe = true;
+  s._lhtml_sanitized = true;
   return s;
 }
 
