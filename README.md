@@ -145,6 +145,12 @@ compiler output or import alias)
 - `$ node tmp/bench.node.js`
 - OR open `bench.html` in browser
 
+### Version bumping
+
+- `$ npm version patch|minor|major`
+- `$ npm run prepare` (make sure the tests are passing!)
+- `$ npm publish`
+
 ## Credits
 
 - [Jason Miller](https://github.com/developit) (original creator of [vhtml](https://github.com/developit/vhtml))
