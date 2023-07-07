@@ -1,7 +1,14 @@
-const HTML_ESCAPE_MAP = {'&':'amp','<':'lt','>':'gt','"':'quot',"'":'apos'};
-// sanitize/escape an html string
-function esc(str){
-  return String(str).replace(/[&<>"']/g, s=>`&${HTML_ESCAPE_MAP[s]};`);
+const HTML_ESCAPE_MAP = {
+  '&':'amp',
+  '<':'lt',
+  '>':'gt',
+  '"':'quot',
+  "'":'apos',
+};
+
+function sanitize(str) {
+  return String(str)
+    .replace(/[&<>"']/g, s => `&${HTML_ESCAPE_MAP[s]};`);
 }
 
 let setInnerHTMLAttr = 'dangerouslySetInnerHTML';
@@ -66,9 +73,9 @@ function renderAttributes(attributes) {
     if (DOMAttributeNames[property]) {
       result += DOMAttributeNames[property];
     } else {
-      result += `${esc(property)}`;
+      result += `${sanitize(property)}`;
     }
-    result += `="${esc(value)}"`;
+    result += `="${sanitize(value)}"`;
   }
 
   return result;
@@ -110,7 +117,7 @@ function render(tagName, attributes) {
           if (child._vvhtml_safe) {
             result += child;
           } else {
-            result += esc(child);
+            result += sanitize(child);
           }
         }
       }
