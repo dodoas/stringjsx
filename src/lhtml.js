@@ -32,11 +32,24 @@ const VOID_TAGS = [
   'wbr'
 ];
 
+function extractChildrenReversed(args) {
+  const stack = [];
+
+  for (let i = args.length; i-- > 2; ) {
+    stack.push(args[i]);
+  }
+
+  return stack;
+}
+
 function extractChildren(args) {
-  return Array.from(args)
-    .slice(2)
-    .reverse()
-  ;
+  const stack = [];
+
+  for (let i = 2; i < args.length; i++) {
+    stack.push(args[i]);
+  }
+
+  return stack;
 }
 
 function renderAttributes(attributes) {
@@ -63,14 +76,14 @@ function renderAttributes(attributes) {
 
 function render(tagName, attributes) {
   attributes = attributes || {};
-  const children = extractChildren(arguments);
 
   if (typeof tagName === 'function') {
     const pseudoComponent = tagName;
-    attributes.children = children.reverse();
+    attributes.children = extractChildren(arguments);
     return pseudoComponent(attributes);
   }
 
+  const children = extractChildrenReversed(arguments);
   let result = '';
 
   if (tagName) { // null is passed when rendering a fragment
