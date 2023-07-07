@@ -1,3 +1,13 @@
+# lhtml
+
+### **Render JSX to HTML strings, without VDOM**
+
+> Need to use HTML strings (angular?) but want to use JSX? lhtml's got your back.
+>
+> Building components? do yourself a favor and use a component framework
+
+---
+
 # This is a fork of [devlopit/vhtml](https://github.com/developit/vhtml)
 
 #### Changes from developit's version:
@@ -19,16 +29,6 @@ string and keep your code working.
 
 ---
 
-# lhtml
-
-### **Render JSX to HTML strings, without VDOM**
-
-> Need to use HTML strings (angular?) but want to use JSX? lhtml's got your back.
->
-> Building components? do yourself a favor and use a component framework
-
----
-
 
 ## Installation
 
@@ -46,7 +46,7 @@ Via npm:
 // import the library:
 import h from 'lhtml';
 
-// tell babel to transpile JSX to h() calls:
+// tell babel (or whatever compiler) to transpile JSX to h() calls:
 /** @jsx h */
 
 // now render JSX to an HTML string!
@@ -128,6 +128,9 @@ Put this in your `compilerOptions`:
   "jsxFactory": "h",
   "jsxFragmentFactory": "h.Fragment",
 ```
+
+(This name can be whatever you want, just make sure it is consistent with your
+compiler output or import alias)
 
 ## Development
 
