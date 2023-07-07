@@ -39,16 +39,6 @@ const VOID_TAGS = [
   'wbr'
 ];
 
-function extractChildrenReversed(args) {
-  const stack = [];
-
-  for (let i = args.length; i-- > 2; ) {
-    stack.push(args[i]);
-  }
-
-  return stack;
-}
-
 function extractChildren(args) {
   const stack = [];
 
@@ -81,6 +71,11 @@ function renderAttributes(attributes) {
   return result;
 }
 
+function isCollection(thing) {
+  // based on what we're actually using on said collection
+  return !!thing.unshift;
+}
+
 function render(tagName, attributes) {
   attributes = attributes || {};
 
@@ -90,7 +85,7 @@ function render(tagName, attributes) {
     return pseudoComponent(attributes);
   }
 
-  const children = extractChildrenReversed(arguments);
+  const children = extractChildren(arguments);
   let result = '';
 
   if (tagName) { // null is passed when rendering a fragment
@@ -107,19 +102,17 @@ function render(tagName, attributes) {
     if (attributes[setInnerHTMLAttr]) {
       result += attributes[setInnerHTMLAttr].__html;
     } else while(children.length) {
-      const child = children.pop();
-      if (child) {
-        if (child.pop) {
-          for (let i = child.length - 1; i >= 0; i--) {
-            children.push(child[i]);
-          }
-        } else {
-          if (child._stringjsx_sanitized) {
-            result += child;
-          } else {
-            result += sanitize(child);
-          }
+      const child = children.shift();
+
+      if (!child) continue;
+
+      if (isCollection(child)) {
+        for (let i = child.length - 1; i >= 0; i--) {
+          children.unshift(child[i]);
         }
+      } else {
+        result +=
+          child._stringjsx_sanitized ? child : sanitize(child);
       }
     }
 
