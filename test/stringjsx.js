@@ -281,4 +281,25 @@ describe('stringjsx', () => {
     expect(b.toString()).to.equal('<div><h1>test</h1></div>');
     expect(c.toString()).to.equal('<div>&lt;h1&gt;test&lt;/h1&gt;</div>');
   });
+
+  // https://github.com/wongchichong/vhtml/commit/854c251a5a2f5f34a2c16d745aba5f64bd7d3c11
+  it('renders svg', () => {
+    expect(
+      <svg viewBox="0 0 100 100">
+        <g transform="translate(50, 50)">
+          <circle class="clock-face" r={48} />
+          <line class="millisecond" y2={-44} />
+          <line class="hour" y2={-22} />
+          <line class="minute" y2={-32} />
+          <line class="second" y2={-38} />
+        </g>
+      </svg>.toString()
+    ).to.equal(
+      '<svg viewBox="0 0 100 100"><g transform="translate(50, 50)">' +
+      '<circle class="clock-face" r="48"></circle>' +
+      '<line class="millisecond" y2="-44"></line><line class="hour" y2="-22">' +
+      '</line><line class="minute" y2="-32"></line>' +
+      '<line class="second" y2="-38"></line></g></svg>'
+    )
+  });
 });
