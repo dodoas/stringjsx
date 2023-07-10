@@ -118,11 +118,16 @@ The above outputs the following HTML:
 </div>
 ```
 
-### dangerouslySetInnerHTML
+### Skipping sanitization
+
+There are two ways to skip sanitization: using `dangerouslySetInnerHTML`, like in React or using the `_stringjsx_sanitized` property.
+
+#### dangerouslySetInnerHTML
+
 As with React and Preact you can provide the prop `dangerouslySetInnerHTML` with an object containing `{__html: '<h1>HTML Content</h1>'}` to directly set the HTML content of an element. However, this is not advisable as it will ignore any children passed to it, and removes the benefits of JSX.
 
 Here is an example:
-```js
+```jsx
 <div dangerouslySetInnerHTML={{__html: '<h1>HTML Content</h1>'}}>
   Overwritten content!
 </div>
@@ -134,6 +139,36 @@ The above outputs the following HTML:
   <h1>HTML Content</h1>
 </div>
 ```
+
+#### `_stringjsx_sanitized`
+
+You can provide a wrapped string object with `_stringjsx_sanitized = true` to
+skip sanitization for that child. This does not interfere with rendering other
+children for that element.
+
+```jsx
+const trustMeBro = new String('<strong>trust me</strong>');
+trustMeBro._stringjsx_sanitized = true;
+
+<div>
+  <p>a</p>
+  {trustMeBro}
+  {'<p>sanitizeme</p>'}
+  <footer>feet</footer>
+</div>
+```
+
+The above outputs the following HTML:
+```html
+<div>
+  <p>a</p>
+  <strong>trust me</strong>
+  &lt;p&gt;sanitizeme&lt;/p&gt;
+  <footer>feet</footer>
+</div>
+```
+
+Note: [you must use the String constructor to do this](./misc/typescript_string.md#what-is-a-string-and-why-is-it-not-a-string).
 
 ## Config
 

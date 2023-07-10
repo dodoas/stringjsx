@@ -59,9 +59,43 @@ describe('stringjsx', () => {
 
   it('injects html from "dangerouslySetInnerHTML.__html" w/o sanitization', () => {
     expect(
-      <div dangerouslySetInnerHTML={{ __html: "<span>Injected HTML</span>" }} />.toString()
+      <div dangerouslySetInnerHTML={{ __html: "<span>Injected HTML</span>" }}>
+        overwritten
+      </div>.toString()
     ).to.equal(
       `<div><span>Injected HTML</span></div>`
+    );
+  });
+
+  it('injects html from a string with _stringjsx_sanitized = true w/o sanitization', () => {
+    const injectable = new String('<span>injectable</span>')
+    injectable._stringjsx_sanitized = true
+
+    expect(
+      <div>
+        <p>p</p>
+        {injectable}
+        {'<p>sanitizeme</p>'}
+        <footer>feet</footer>
+      </div>.toString()
+    ).to.equal(
+      `<div><p>p</p><span>injectable</span>` +
+      `&lt;p&gt;sanitizeme&lt;/p&gt;<footer>feet</footer></div>`
+    );
+  });
+
+  it('handles _stringjsx_sanitized for children in array', () => {
+    const injectable = new String('<span>injectable</span>');
+    injectable._stringjsx_sanitized = true
+
+    const collection = ['a', injectable, '<p>sanitizeme</p>', 'd']
+
+    expect(
+      <div>
+        {collection}
+      </div>.toString()
+    ).to.equal(
+      '<div>a<span>injectable</span>&lt;p&gt;sanitizeme&lt;/p&gt;d</div>'
     );
   });
 
