@@ -8,7 +8,7 @@
 
 ---
 
-# This is a fork of [devlopit/vhtml](https://github.com/developit/vhtml)
+# This is a fork of [developit/vhtml](https://github.com/developit/vhtml)
 
 #### Changes from developit's version:
 
