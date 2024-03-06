@@ -50,14 +50,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/odinhb/stringjsx.git"
+    "url": "git+https://github.com/dodoas/stringjsx.git"
   },
   "author": "Jason Miller <jason@developit.ca>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/odinhb/stringjsx/issues"
+    "url": "https://github.com/dodoas/stringjsx/issues"
   },
-  "homepage": "https://github.com/odinhb/stringjsx",
+  "homepage": "https://github.com/dodoas/stringjsx",
   "devDependencies": {
     "babel-core": "^6.6.4",
     "babel-eslint": "^7.0.0",
