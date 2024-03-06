@@ -187,7 +187,7 @@ compiler output or import alias)
 
 ## Development
 
-- Use nodejs 12.
+- `$ asdf install` (Use nodejs version as specified in `.tool-versions`)
 - `$ npm install`
 - `$ npm test`
 
