@@ -87,8 +87,9 @@ function render(tagName, attributes) {
 
   const children = extractChildren(arguments);
   let result = '';
+  const isFragment = tagName !== null && tagName !== undefined;
 
-  if (tagName) { // null is passed when rendering a fragment
+  if (isFragment) {
     result += '<';
 
     result += tagName;
@@ -104,7 +105,10 @@ function render(tagName, attributes) {
     } else while(children.length) {
       const child = children.shift();
 
-      if (!child) continue;
+      if (child === undefined || child === null) {
+        result += child;
+        continue;
+      }
 
       if (isCollection(child)) {
         for (let i = child.length - 1; i >= 0; i--) {
@@ -116,7 +120,7 @@ function render(tagName, attributes) {
       }
     }
 
-    if (tagName) result += `</${tagName}>`;
+    if (isFragment) result += `</${tagName}>`;
   }
 
   // Read about the fun world of javascript strings

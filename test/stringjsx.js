@@ -269,6 +269,14 @@ describe('stringjsx', () => {
     );
   });
 
+  it('also supports fragments w/ undefined', () => {
+    expect(
+      h(h.Fragment, null, <p>foo</p>, <em>bar</em>, <div class="qqqqqq">baz</div>).toString()
+    ).to.equal(
+      '<p>foo</p><em>bar</em><div class="qqqqqq">baz</div>'
+    );
+  });
+
   // regression test for https://github.com/developit/vhtml/issues/34
   it('does not allow cache-based html injection anymore', () => {
     const injectable = '<h1>test</h1>';
@@ -301,5 +309,102 @@ describe('stringjsx', () => {
       '</line><line class="minute" y2="-32"></line>' +
       '<line class="second" y2="-38"></line></g></svg>'
     )
+  });
+
+  describe('literal rendering', () => {
+    it('renders the empty string', () => {
+      expect(
+        <div>{''}</div>.toString()
+      ).to.equal('<div></div>')
+    });
+
+    it('renders blank strings', () => {
+      expect(
+        <div>{' '} and also {'\n\n\n   \t\t\t'}</div>.toString()
+      ).to.equal('<div>  and also \n\n\n   \t\t\t</div>')
+    });
+
+    it('renders a goofy string', () => {
+      expect(
+        <div>{'haha'}</div>.toString()
+      ).to.equal('<div>haha</div>')
+    });
+
+    it('renders numbers', () => {
+      expect(
+        <div>
+          {63452}
+          <span>num: {12385}</span>
+          <p>{-882}, {942}</p>
+        </div>.toString()
+      ).to.equal('<div>63452<span>num: 12385</span><p>-882, 942</p></div>')
+    });
+
+    it('renders infinities', () => {
+      // impressive
+      expect(
+        <div>
+          {Infinity}+{-Infinity}
+        </div>.toString()
+      ).to.equal('<div>Infinity+-Infinity</div>')
+    });
+
+    it('renders a "very big" number', () => {
+      expect(
+        <div>{5463454363452342352665745632523423423}</div>.toString()
+      ).to.equal('<div>5.463454363452342e+36</div>')
+    });
+
+    // TODO: hmm maybe isn't supported by any node tooling yet?
+    // it('renders a bigint', () => {
+    //   expect(
+    //     <div>{5463454363452342352665745632523423423n}</div>.toString()
+    //   ).to.equal('<div>5463454363452342352665745632523423423</div>')
+    // });
+
+    // regression test for https://github.com/developit/vhtml/issues/40
+    it('renders zero', () => {
+      expect(
+        <div>{0} elephants carrying {0} trees</div>.toString()
+      ).to.equal('<div>0 elephants carrying 0 trees</div>')
+    });
+
+    it('renders booleans', () => {
+      expect(
+        <div>
+          <p>{true} love</p>
+          <th>{false} promises</th>
+        </div>.toString()
+      ).to.equal('<div><p>true love</p><th>false promises</th></div>')
+    });
+
+    it('renders undefined', () => {
+      expect(<div>{undefined} behaviour</div>.toString())
+        .to.equal('<div>undefined behaviour</div>')
+    });
+
+    it('renders null', () => {
+      expect(<div>{null} and void</div>.toString())
+        .to.equal('<div>null and void</div>')
+    });
+
+    it('"renders" an object', () => {
+      expect(<div>object? {{}} object</div>.toString())
+        .to.equal('<div>object? [object Object] object</div>')
+    });
+
+    it('renders an array', () => {
+      expect(<div>little bit of {['a', 'b']}</div>.toString())
+        .to.equal('<div>little bit of ab</div>')
+    });
+
+    it('renders toString', () => {
+      const instrument = {
+        toString: function() { return 'ukulele' },
+      }
+
+      expect(<div>instrument: {instrument}</div>.toString())
+        .to.equal('<div>instrument: ukulele</div>')
+    });
   });
 });
