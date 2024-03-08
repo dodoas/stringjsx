@@ -1,82 +1,113 @@
 # stringjsx
 
-### **Render JSX to HTML strings, without VDOM**
+## Render JSX to HTML
 
-> Need to use HTML strings (angular?) but want to use JSX? stringjsx's got your back.
->
-> Building components? do yourself a favor and use a component framework
-
----
-
-# This is a fork of [developit/vhtml](https://github.com/developit/vhtml)
-
-#### Changes from developit's version:
-
- - Returns a [wrapped](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_primitives_and_string_objects) instance of a String instead
- - Stateless ([no sanitize cache](https://github.com/developit/vhtml/issues/34), [no memory leaks](https://github.com/developit/vhtml/issues/20))
- - Allows you to pass a String (object!) with `_stringjsx_sanitized = true` to skip sanitization for that child (Thank you to [remziatay](https://github.com/remziatay) for the `new String()` idea!)
- - Types are shipped with the package (no more `@types/vhtml`)
- - [Typescript will still think the library returns a `string`](./misc/typescript_string.md) for compatibility with previous uses of `.innerHTML =`
-
-The wrapped string is not a breaking change if you assign the return value to something like `.innerHTML` or `.textContent`:
-
-```jsx
-  document.body.innerHTML = <div><p>this works the same!</p></div>
-```
-
-However if you were reliant on typeof or simliar, it might break your code. In
-that case you can add `.toString()` or `.valueOf()` to retrieve the primitive
-string and keep your code working.
-
----
-
+This library allows you to write jsx syntax but transform it into a string at
+runtime. It also sanitizes any interpolated strings, unlike using template
+strings, where you would need to do so manually.
 
 ## Installation
 
-Via npm:
+Put in your `package.json` `"dependencies"`:
+```json
+{
+  // ...
+  "stringjsx": "^3.0.0",
+  // ...
+}
+```
+
+Or use npm:
 
 `npm install --save stringjsx`
 
+Or yarn:
 
----
+`yarn add stringjsx`
 
+Or pnpm:
+
+`pnpm install stringjsx`
 
 ## Usage
 
-```jsx
-// import the library:
-import h from 'stringjsx';
+### Configuration
 
-// tell babel (or whatever compiler) to transpile JSX to h() calls:
-/** @jsx h */
+In order for stringjsx to work you need a compiler supporting jsx, which comes with
+some options.
 
-// now render JSX to an HTML string!
-let items = ['one', 'two', 'three'];
+If, for example, you have a `tsconfig.json`, it should contain:
 
-document.body.innerHTML = (
-  <div class="foo">
-    <h1>Hi!</h1>
-    <p>Here is a list of {items.length} items:</p>
-    <ul>
-      { items.map( item => (
-        <li>{ item }</li>
-      )) }
-    </ul>
-  </div>
-);
+```json
+{
+  // ...
+  "compilerOptions": {
+    // ...
+    "jsx": "react",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "h.Fragment",
+    // ...
+  },
+  // ...
+}
 ```
 
-### Functional component rendering!
+What matters is that `h` is the default export from the stringjsx
+package and that your compiler knows to use that name for all your jsx code.
 
-`stringjsx` intentionally does not transform JSX to a Virtual DOM, instead serializing it directly to HTML.
-However, it's still possible to make use of basic Pure Functional Components as a sort of "template partial".
+The `FragmentFactory` should in some way be set to `<default export>.Fragment`.
+
+You may also be able to configure your compiler to inject the import line.
+
+### Writing jsx
+
+Now you can render jsx to strings in your code:
+
+```jsx
+document.body.innerHTML = <div>
+  <p>this is my dom</p>
+  <p>haha</p>
+</div>
+```
+
+If you configured your fragment factory correctly you should also be able to
+do fragments:
+
+```jsx
+function f1() {
+  return (<>
+    <div>three</div>
+    <div>root</div>
+    <div>elements</div>
+  </>)
+}
+
+document.body.innerHTML = <div>
+  {f1()}
+  <p>success!</p>
+</div>
+```
+
+### tsx
+
+Since the package comes with types you should be able to just use it as is.
+[Note that the type checking may not be perfect](https://github.com/developit/vhtml/issues/19#issuecomment-757658538).
+
+```tsx
+const coolDOMString: string = <div>my div</div>;
+```
+
+### "Component" rendering
+
+`stringjsx` serializes JSX directly to HTML.
+However, it's still possible to create a basic kind of Pure Functional Components as a sort of "template partial".
 
 When `stringjsx` is given a Function as the JSX tag name, it will invoke that function and pass it `{ children, ...props }`.
 This is the same signature as a Pure Functional Component in react/preact, except `children` is an Array of already-serialized HTML strings.
 
 This actually means it's possible to build compositional template modifiers with these simple Components, or even higher-order components.
 
-Here's a more complex version of the previous example that uses a component to encapsulate iteration items:
+Here's a more complex example that uses a component to encapsulate iteration items:
 
 ```jsx
 let items = ['one', 'two'];
@@ -118,74 +149,57 @@ The above outputs the following HTML:
 </div>
 ```
 
-### Skipping sanitization
+### Sanitization
 
-There are two ways to skip sanitization: using `dangerouslySetInnerHTML`, like in React or using the `_stringjsx_sanitized` property.
-
-#### dangerouslySetInnerHTML
-
-As with React and Preact you can provide the prop `dangerouslySetInnerHTML` with an object containing `{__html: '<h1>HTML Content</h1>'}` to directly set the HTML content of an element. However, this is not advisable as it will ignore any children passed to it, and removes the benefits of JSX.
-
-Here is an example:
-```jsx
-<div dangerouslySetInnerHTML={{__html: '<h1>HTML Content</h1>'}}>
-  Overwritten content!
-</div>
-```
-
-The above outputs the following HTML:
-```html
-<div>
-  <h1>HTML Content</h1>
-</div>
-```
-
-#### `_stringjsx_sanitized`
-
-You can provide a wrapped string object with `_stringjsx_sanitized = true` to
-skip sanitization for that child. This does not interfere with rendering other
-children for that element.
+stringjsx sanitizes html for you:
 
 ```jsx
-const trustMeBro = new String('<strong>trust me</strong>');
-trustMeBro._stringjsx_sanitized = true;
+const username = '<script>alert("hacked");</script>'
 
-<div>
-  <p>a</p>
-  {trustMeBro}
-  {'<p>sanitizeme</p>'}
-  <footer>feet</footer>
-</div>
+const html = <div><span>{username}</span></div>;
 ```
 
-The above outputs the following HTML:
+becomes:
+
 ```html
-<div>
-  <p>a</p>
-  <strong>trust me</strong>
-  &lt;p&gt;sanitizeme&lt;/p&gt;
-  <footer>feet</footer>
-</div>
+<div><span>&lt;script&gt;alert(&quot;hacked&quot;);&lt;/script&gt;</span></div>
+```
+
+#### Skipping sanitization
+
+To skip sanitization you have two options:
+
+##### dangerouslySetInnerHTML
+
+```jsx
+const username = '<script>alert("hacked");</script>'
+
+const html = <div>
+  <span dangerouslySetInnerHTML={{__html: username}}>this will be overwritten</span>
+</div>;
+```
+
+This will also overwrite any content you put in that element normally.
+
+##### `_stringjsx_sanitized`
+
+```jsx
+const username = new String('<script>alert("hacked");</script>');
+username._stringjsx_sanitized = true;
+
+const html = <div><span>{username}</span></div>;
 ```
 
 Note: [you must use the String constructor to do this](./misc/typescript_string.md#what-is-a-string-and-why-is-it-not-a-string).
 
-## Config
+## Credits
 
-### Typescript
+- [Jason Miller](https://github.com/developit) (original creator of [vhtml](https://github.com/developit/vhtml))
+- [Odin](https://github.com/odinhb) (created stringjsx from vhtml, rewrote the code for readability, pulling in improvements from other forks)
 
-Put this in your `compilerOptions`:
+## Setting up for development
 
-```json
-  "jsx": "react",
-  "jsxFactory": "h",
-  "jsxFragmentFactory": "h.Fragment",
-```
-
-(This name can be whatever you want, just make sure it is consistent with your
-compiler output or import alias)
-
-## Development
+Contribution/maintenance instructions follow.
 
 - `$ asdf install` (Use nodejs version as specified in `.tool-versions`)
 - `$ npm install`
@@ -202,7 +216,3 @@ compiler output or import alias)
 - `$ npm version patch|minor|major`
 - `$ npm run prepare` (make sure the tests are passing!)
 - `$ npm publish`
-
-## Credits
-
-- [Jason Miller](https://github.com/developit) (original creator of [vhtml](https://github.com/developit/vhtml))
