@@ -87,9 +87,9 @@ function render(tagName, attributes) {
 
   const children = extractChildren(arguments);
   let result = '';
-  const isFragment = tagName !== null && tagName !== undefined;
+  const isFragment = tagName === null || tagName === undefined;
 
-  if (isFragment) {
+  if (!isFragment) {
     result += '<';
 
     result += tagName;
@@ -120,7 +120,7 @@ function render(tagName, attributes) {
       }
     }
 
-    if (isFragment) result += `</${tagName}>`;
+    if (!isFragment) result += `</${tagName}>`;
   }
 
   // Read about the fun world of javascript strings
