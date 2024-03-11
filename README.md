@@ -205,6 +205,14 @@ Contribution/maintenance instructions follow.
 - `$ npm install`
 - `$ npm test`
 
+You may want to install your development version of stringjsx in a real project
+for testing:
+
+```json
+// package.json
+"stringjsx": "file:~/path/to/this/repo",
+```
+
 ### Contributing
 
 - [ ] Fork
