@@ -205,6 +205,16 @@ Contribution/maintenance instructions follow.
 - `$ npm install`
 - `$ npm test`
 
+### Contributing
+
+- [ ] Fork
+- [ ] Add tests
+- [ ] Make your changes
+- [ ] Add or change any documentation
+- [ ] Add an unreleased entry to the changelog
+- [ ] Make sure the benchmark compares favourably to vhtml
+- [ ] Submit your pull request
+
 ### Benchmarking
 
 - `$ npm run bench`
@@ -213,6 +223,7 @@ Contribution/maintenance instructions follow.
 
 ### Version bumping
 
+- Update the changelog
 - `$ npm version patch|minor|major`
 - `$ npm run prepare` (make sure the tests are passing!)
 - `$ npm publish`
