@@ -9,7 +9,7 @@ export default {
   entry: 'bench.js',
   dest: 'tmp/bench.node.js',
   sourceMap: 'inline',
-  format: 'cjs',
+  format: 'es',
   globals: {
     'micro-benchmark': 'microBenchmark',
   },
