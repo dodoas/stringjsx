@@ -12,7 +12,7 @@ Put in your `package.json` `"dependencies"`:
 ```json
 {
   // ...
-  "stringjsx": "^3.0.0",
+  "stringjsx": "^4.0.1",
   // ...
 }
 ```
