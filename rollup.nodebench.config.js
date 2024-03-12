@@ -7,7 +7,7 @@ let pkg = JSON.parse(fs.readFileSync('./package.json'));
 
 export default {
   entry: 'bench.js',
-  dest: 'tmp/bench.node.js',
+  dest: 'tmp/bench.node.mjs',
   sourceMap: 'inline',
   format: 'es',
   globals: {

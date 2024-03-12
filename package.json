@@ -14,7 +14,7 @@
     "build-bench": "npm-run-all build-browserbench build-nodebench",
     "build-browserbench": "rollup -c rollup.browserbench.config.js",
     "build-nodebench": "rollup -c rollup.nodebench.config.js",
-    "benchmark-in-node": "node tmp/bench.node.js",
+    "benchmark-in-node": "node tmp/bench.node.mjs",
     "minify": "uglifyjs $npm_package_main -cm -o $npm_package_minified_main -p relative --in-source-map ${npm_package_main}.map --source-map ${npm_package_minified_main}.map",
     "size": "echo \"gzip size: $(gzip-size $npm_package_minified_main | pretty-bytes)\"",
     "test": "mocha --compilers js:babel-register test/**/*.js",
