@@ -97,6 +97,8 @@ Since the package comes with types you should be able to just use it as is.
 const coolDOMString: string = <div>my div</div>;
 ```
 
+Also, [keep in mind that the library actually returns a `String` and not a `string`](./misc/typescript_string.md). Depending on your use case this may be a problem.
+
 ### "Component" rendering
 
 `stringjsx` serializes JSX directly to HTML.
