@@ -16,9 +16,9 @@ modules when pulling the code in.
 
 ### Changed
 
-- Render nulls, undefined, zeroes and false correctly and more in line with how template strings do. (https://github.com/dodoas/stringjsx/pull/3)
+- Render nulls, undefined, zeroes and false; more in line with how template strings do. (https://github.com/dodoas/stringjsx/pull/3) **This is a breaking change. Make sure to review any existing code so that you don't render nulls on production.**
 
-### [3.0.0] - 2023-07-07
+## [3.0.0] - 2023-07-07
 
 - This version marks the fork from [vhtml](https://www.npmjs.com/package/vhtml)
 
